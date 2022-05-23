@@ -1,0 +1,19 @@
+{
+    "name": "laptop/arklink-backend",
+    "type": "project",
+    "require": {
+        "imagekit/imagekit": "^2.0",
+        "firebase/php-jwt": "^6.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Akahibe Kingsley",
+            "email": "divine10646@gmail.com"
+        }
+    ]
+}
