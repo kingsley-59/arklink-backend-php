@@ -1,31 +1,21 @@
 <?php
 namespace App\Controller;
 
-//require __DIR__.'/BaseController.php';
-//require __DIR__.'/../Model/CategoryModel.php';
-
-
 use App\Controller\BaseController;
-use App\Model\Product;
+use App\Model\Message;
 
 
-class ProductController extends BaseController
+class MessageController extends BaseController
 {
     private $productModel;
     public function processRequest()
     {
         $id = (isset($this->uri[3])) ? $this->uri[3] : null;
-        // if (! isset($id)) {
-        //     echo json_encode($this->unprocessableEntity());
-        // }
-        $this->productModel = new Product();
+        
+        $this->productModel = new Message();
         switch ($this->requestMethod) {
             case 'GET':
-                if ($id) {
-                    $response = $this->findOne($id);
-                } else {
-                    $response = $this->findAll();
-                }
+                $response = $this->findAll();
                 break;
 
             case 'POST':
@@ -56,18 +46,7 @@ class ProductController extends BaseController
 
     private function findAll()
     {
-        $result = $this->productModel->getAllProducts();
-        $response['status_code_header'] = 'HTTP/1.1 200 OK';
-        $response['body'] = $result;
-        return $response;
-    }
-
-    private function findOne($id)
-    {
-        $result = $this->productModel->getOneProduct($id);
-        if (! $result) {
-            return $this->notFoundResponse();
-        }
+        $result = $this->productModel->getAllMessages();
         $response['status_code_header'] = 'HTTP/1.1 200 OK';
         $response['body'] = $result;
         return $response;
@@ -77,7 +56,7 @@ class ProductController extends BaseController
     {
         $input = (array) json_decode(file_get_contents('php://input'), TRUE);
         $input = $this->sanitizeInput($input);
-        $result = $this->productModel->createProduct($input);
+        $result = $this->productModel->createMessage($input);
         $response['status_code_header'] = 'HTTP/1.1 201 Created';
         $response['body'] = $result;
         return $response;
@@ -87,7 +66,7 @@ class ProductController extends BaseController
     {
         $input = (array) json_decode(file_get_contents('php://input'), TRUE);
         $input = $this->sanitizeInput($input);
-        $result = $this->productModel->updateProduct($id, $input);
+        $result = $this->productModel->updateMessage($id, $input);
         $response['status_code_header'] = 'HTTP/1.1 201 Created';
         $response['body'] = $result;
         return $response;
@@ -95,8 +74,8 @@ class ProductController extends BaseController
 
     private function delete($id)
     {
-        $result = $this->productModel->deleteProduct($id);
-        $response['status_code_header'] = 'HTTP/1.1 200 Created';
+        $result = $this->productModel->deleteMessage($id);
+        $response['status_code_header'] = 'HTTP/1.1 201 Created';
         $response['body'] = $result;
         return $response;
     }

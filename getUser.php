@@ -13,6 +13,7 @@ use App\Model\Database;
 $allHeaders = getallheaders();
 $db_connection = new Database();
 $conn = $db_connection->getConnection();
+
 $auth = new Auth($conn, $allHeaders);
 
 echo json_encode($auth->isValid());

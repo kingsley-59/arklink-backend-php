@@ -78,6 +78,7 @@ else:
                     $returnData = [
                         'success' => 1,
                         'message' => 'You have successfully logged in.',
+                        'email' => $email,
                         'token' => $token
                     ];
 

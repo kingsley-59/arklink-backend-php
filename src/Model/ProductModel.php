@@ -5,34 +5,28 @@ namespace App\Model;
 
 use App\Model\Database;
 
-class Content extends Database 
+class Product extends Database 
 {
     public function __construct()
     {
         $this->conn = $this->getConnection();
     }
 
-    public function createContent(Array $input)
+    public function createProduct(Array $input)
     {
         $query = "
-            INSERT INTO site_content
-                (banner_heading, banner_text, about_essay, email, phone, facebook_url, instagram_url, twitter_url, whatsapp_no, address, last_modified)
-            VALUES (:banner_heading, :banner_text, :about_essay, :email, :phone, :facebook_url, :instagram_url, :twitter_url, :whatsapp_no, :address, now());
+            INSERT INTO products
+                (name, category, description, photo_url, date_added)
+            VALUES (:name, :category, :description, :photo_url, now());
         ";
 
         try {
             $statement = $this->conn->prepare($query);
             $statement->execute(array(
-                'banner_heading' => $input['bannerHeading'],
-                'banner_text' => $input['bannerText'],
-                'about_essay' => $input['aboutEssay'],
-                'email' => $input['email'],
-                'phone' => $input['phone'],
-                'facebook_url' => $input['facebookUrl'] ?? null,
-                'instagram_url' => $input['instagramUrl'] ?? null,
-                'twitter_url' => $input['twitterUrl'] ?? null,
-                'whatsapp_no' => $input['whatsappNo'] ?? null,
-                'address' => $input['address']
+                'name' => $input['name'],
+                'category' => $input['category'],
+                'description' => $input['description'],
+                'photo_url' => $input['photo_url']
             ));
             return $statement->rowCount();
         } catch (\PDOException $e) {
@@ -40,10 +34,10 @@ class Content extends Database
         }
     }
 
-    public function getAllContent()
+    public function getAllProducts()
     {
         $query = "
-            SELECT * FROM site_content ORDER BY id DESC;
+            SELECT * FROM products ORDER BY id DESC;
         ";
 
         try {
@@ -55,10 +49,10 @@ class Content extends Database
         }
     }
 
-    public function getOneContent($id)
+    public function getOneProduct($id)
     {
         $query = "
-            SELECT * FROM site_content WHERE id = ? ;
+            SELECT * FROM products WHERE id = ? ;
         ";
 
         try {
@@ -71,30 +65,32 @@ class Content extends Database
         }
     }
 
-    public function UpdateContent($id, $new_count)
+    public function updateProduct($id, $values)
     {
+        $name = $values['name'] ?? null;
+        $category = $values['category'] ?? null;
+        $description = $values['description'] ?? null;
         $query = "
-            UPDATE site_content
-            SET no_of_products = :number
-            WHERE id = :id ;
+            UPDATE products SET
+            `name` = '$name',
+            `category` = '$category',
+            `description` = '$description'
+            WHERE id = $id ;
         ";
 
         try {
             $statement = $this->conn->prepare($query);
-            $statement->execute(array(
-                'id' => (int) $id,
-                'number' => (int) $new_count
-            ));
+            $statement->execute();
             return $statement->rowCount();
         } catch (\PDOException $e) {
             return 'Error:'.$e->getMessage();
         }
     }
 
-    public function deleteContent($id)
+    public function deleteProduct($id)
     {
         $query = "
-            DELETE FROM site_content
+            DELETE FROM products
             WHERE id = ? ;
         ";
 

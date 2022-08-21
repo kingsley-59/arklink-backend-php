@@ -7,7 +7,10 @@ use App\Controller\BaseController;
 use App\Controller\ContentController;
 use App\Controller\CategoryController;
 use App\Controller\ImageKitController;
-
+use App\Controller\ProductController;
+use App\Controller\QuoteController;
+use App\Controller\MessageController;
+use App\Controller\SubscriberController;
 
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
@@ -50,7 +53,23 @@ function processRequest($requestMethod, $uri)
             break;
 
         case 'products':
-            # code...
+            $product = new ProductController($requestMethod, $uri);
+            $product->processRequest();
+            break;
+
+        case 'quotes':
+            $product = new QuoteController($requestMethod, $uri);
+            $product->processRequest();
+            break;
+
+        case 'messages':
+            $product = new MessageController($requestMethod, $uri);
+            $product->processRequest();
+            break;
+
+        case 'subscribers':
+            $product = new SubscriberController($requestMethod, $uri);
+            $product->processRequest();
             break;
 
         case 'image-kit-auth':
